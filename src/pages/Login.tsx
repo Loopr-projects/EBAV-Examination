@@ -1,22 +1,22 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState, type FormEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function Login() {
   const { signIn } = useAuth()
   const navigate = useNavigate()
 
-  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [role, setRole] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError('')
     setLoading(true)
 
-    const { error } = await signIn(email, password)
+    const { error } = await signIn(role, password)
 
     if (error) {
       setError(error.message)
@@ -37,16 +37,17 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+            <label htmlFor="role">Role</label>
+            <select
+              id="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
               required
-              autoComplete="email"
-              placeholder="you@example.com"
-            />
+            >
+              <option value="" disabled>Select a role</option>
+              <option value="student@test.com">Student</option>
+              <option value="test@test.com">Instructor</option>
+            </select>
           </div>
 
           <div className="form-group">
@@ -66,11 +67,6 @@ export default function Login() {
             {loading ? 'Signing in…' : 'Sign In'}
           </button>
         </form>
-
-        <p className="auth-link">
-          Don&apos;t have an account?{' '}
-          <Link to="/signup">Create one</Link>
-        </p>
       </div>
     </div>
   )

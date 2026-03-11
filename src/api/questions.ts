@@ -35,3 +35,13 @@ export async function copyQuestion(question: Question): Promise<Question[]> {
   if (error) throw error
   return (data as Question[]) ?? []
 }
+
+export async function updateQuestion(guid: number, payload: Partial<CreateQuestionPayload>): Promise<Question> {
+  const { data, error } = await supabase
+    .from('questions')
+    .update(payload)
+    .eq('guid', guid)
+    .select()
+  if (error) throw error
+  return (data as Question[])[0]
+}

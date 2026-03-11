@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import ebavLogo from '../assets/EBAV-Correct.png'
 
 interface DashboardHeaderProps {
@@ -14,6 +15,11 @@ export default function DashboardHeader({ email, onSignOut }: DashboardHeaderPro
         <img src={ebavLogo} alt="EBAV logo" className="dashboard-header-logo" />
         <span className="dashboard-header-title">Avernas Flightschool</span>
       </div>
+      <nav className="dashboard-nav">
+        <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Dashboard</NavLink>
+        <NavLink to="/documents" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Documents</NavLink>
+        <NavLink to="/history" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>History</NavLink>
+      </nav>
       <div className="dashboard-header-user">
         <span className="dashboard-header-role">{role}</span>
         <span className="dashboard-header-email">{email}</span>

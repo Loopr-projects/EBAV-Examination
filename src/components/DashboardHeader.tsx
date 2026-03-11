@@ -13,7 +13,7 @@ export default function DashboardHeader({ email, onSignOut }: DashboardHeaderPro
     <header className="dashboard-header">
       <div className="dashboard-header-brand">
         <img src={ebavLogo} alt="EBAV logo" className="dashboard-header-logo" />
-        <span className="dashboard-header-title">Avernas Flightschool</span>
+        <span className="dashboard-header-title">Avernas Flight School</span>
       </div>
       <nav className="dashboard-nav">
         <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Dashboard</NavLink>

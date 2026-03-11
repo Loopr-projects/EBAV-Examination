@@ -58,6 +58,12 @@ body {
   justify-content: center;
   min-height: 100vh;
   padding: 1.5rem;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url('https://www.aero-hesbaye.eu/Images/Historique%20Avernas/clip_image002.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .auth-card {
@@ -67,6 +73,18 @@ body {
   padding: 2.5rem 2rem;
   width: 100%;
   max-width: 420px;
+}
+
+.auth-logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.auth-logo {
+  height: 5rem;
+  width: auto;
+  object-fit: contain;
 }
 
 .auth-title {

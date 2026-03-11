@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import ebavLogo from '../assets/EBAV-Correct.png'
 
 export default function Login() {
   const { signIn } = useAuth()
@@ -30,7 +31,10 @@ export default function Login() {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h1 className="auth-title">EBAV Flight School</h1>
+        <div className="auth-logo-wrap">
+          <img src={ebavLogo} alt="EBAV logo" className="auth-logo" />
+        </div>
+        <h1 className="auth-title">Avernas Flight School</h1>
         <h2 className="auth-subtitle">Sign In</h2>
 
         {error && <p className="error-message">{error}</p>}

@@ -17,6 +17,7 @@ export default function DashboardHeader({ email, onSignOut }: DashboardHeaderPro
       </div>
       <nav className="dashboard-nav">
         <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Dashboard</NavLink>
+        <NavLink to="/questions" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Questions</NavLink>
         <NavLink to="/documents" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Documents</NavLink>
         <NavLink to="/history" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>History</NavLink>
       </nav>

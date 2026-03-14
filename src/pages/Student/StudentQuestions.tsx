@@ -5,10 +5,10 @@ import { fetchQuestionsByCategory } from '../../api/questions'
 import type { Category, Question } from '../../types'
 import DashboardHeader from '../../components/DashboardHeader'
 import CategoryList from '../../components/CategoryList'
-import QuestionItem from '../../components/QuestionItem'
+import QuestionList from '../../components/QuestionList'
 import StudentExamination from './StudentExamination'
 
-export default function StudentDashboard() {
+export default function StudentQuestions() {
   const { user, signOut } = useAuth()
 
   const [categories, setCategories] = useState<Category[]>([])
@@ -66,8 +66,7 @@ export default function StudentDashboard() {
                 categories={categories}
                 selectedCategory={selectedCategory}
                 onSelect={setSelectedCategory}
-                onEdit={() => {}}
-                onDelete={() => {}}
+                readOnly
               />
             )}
           </div>
@@ -96,16 +95,10 @@ export default function StudentDashboard() {
               ) : questions.length === 0 ? (
                 <p>No questions in this category.</p>
               ) : (
-                <ol className="question-list">
-                  {questions.map((q) => (
-                    <QuestionItem
-                      key={q.guid}
-                      question={q}
-                      onEdit={() => {}}
-                      onDelete={() => {}}
-                    />
-                  ))}
-                </ol>
+                <QuestionList
+                questions={questions}
+                readOnly
+              />
               )}
             </div>
             </div>

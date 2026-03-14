@@ -6,7 +6,8 @@ interface StudentExaminationProps {
   onExit: () => void
 }
 
-const SECONDS_PER_QUESTION = 120
+const EXAM_QUESTION_COUNT = 20
+const TOTAL_SECONDS = 40 * 60
 const ANSWER_KEYS = ['answer1', 'answer2', 'answer3', 'answer4', 'answer5', 'answer6'] as const
 
 function shuffle<T>(arr: T[]): T[] {
@@ -27,26 +28,27 @@ function formatTime(seconds: number): string {
 type Phase = 'exam' | 'results'
 
 export default function StudentExamination({ questions, onExit }: StudentExaminationProps) {
-  const [shuffled] = useState<Question[]>(() => shuffle(questions))
+  const [shuffled] = useState<Question[]>(() => shuffle(questions).slice(0, EXAM_QUESTION_COUNT))
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [answers, setAnswers] = useState<(number | null)[]>(() => new Array(questions.length).fill(null))
-  const [timeLeft, setTimeLeft] = useState(SECONDS_PER_QUESTION)
+  const [answers, setAnswers] = useState<(number | null)[]>(() =>
+    new Array(Math.min(questions.length, EXAM_QUESTION_COUNT)).fill(null)
+  )
+  const [timeLeft, setTimeLeft] = useState(TOTAL_SECONDS)
   const [phase, setPhase] = useState<Phase>('exam')
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  const current = shuffled[currentIndex]
   const totalQuestions = shuffled.length
+  const current = shuffled[currentIndex]
 
-  // Reset and start timer on each new question
+  // Single global countdown for the entire exam
   useEffect(() => {
     if (phase !== 'exam') return
-    setTimeLeft(SECONDS_PER_QUESTION)
 
     timerRef.current = setInterval(() => {
       setTimeLeft((t) => {
         if (t <= 1) {
           clearInterval(timerRef.current!)
-          advance(null)
+          setPhase('results')
           return 0
         }
         return t - 1
@@ -54,34 +56,29 @@ export default function StudentExamination({ questions, onExit }: StudentExamina
     }, 1000)
 
     return () => clearInterval(timerRef.current!)
-  }, [currentIndex, phase])
+  }, [phase])
 
-  function advance(answer: number | null) {
-    clearInterval(timerRef.current!)
+  function selectAnswer(num: number) {
     setAnswers((prev) => {
       const next = [...prev]
-      next[currentIndex] = answer
+      next[currentIndex] = num
       return next
     })
-    if (currentIndex + 1 >= totalQuestions) {
-      setPhase('results')
-    } else {
-      setCurrentIndex((i) => i + 1)
-    }
   }
 
-  function handleAnswer(num: number) {
-    advance(num)
+  function submitExam() {
+    clearInterval(timerRef.current!)
+    setPhase('results')
   }
 
   const filledAnswers = ANSWER_KEYS.map((key, i) => ({ key, num: i + 1, text: current?.[key] }))
     .filter((a) => a.text?.trim())
 
-  const timerPercent = (timeLeft / SECONDS_PER_QUESTION) * 100
-  const timerDanger = timeLeft <= 30
+  const timerPercent = (timeLeft / TOTAL_SECONDS) * 100
+  const timerDanger = timeLeft <= 300 // 5-minute warning
 
-  // Score calculation
   const correctCount = answers.filter((a, i) => a === shuffled[i]?.correct_answer).length
+  const answeredCount = answers.filter((a) => a !== null).length
 
   if (phase === 'results') {
     return (
@@ -110,7 +107,7 @@ export default function StudentExamination({ questions, onExit }: StudentExamina
                   </div>
                   <div className="result-answers">
                     {given === null && (
-                      <span className="result-answer timed-out">⏱ Timed out — no answer given</span>
+                      <span className="result-answer timed-out">— No answer given</span>
                     )}
                     {given !== null && !isCorrect && (
                       <span className="result-answer your-answer">
@@ -127,7 +124,7 @@ export default function StudentExamination({ questions, onExit }: StudentExamina
           </ol>
 
           <button className="btn-primary exam-exit-btn" onClick={onExit}>
-            Back to Dashboard
+            Back to Questions
           </button>
         </div>
       </div>
@@ -161,13 +158,52 @@ export default function StudentExamination({ questions, onExit }: StudentExamina
         <ol className="exam-answers">
           {filledAnswers.map(({ num, text }) => (
             <li key={num}>
-              <button className="exam-answer-btn" onClick={() => handleAnswer(num)}>
+              <button
+                className={`exam-answer-btn${answers[currentIndex] === num ? ' selected' : ''}`}
+                onClick={() => selectAnswer(num)}
+              >
                 <span className="exam-answer-letter">{String.fromCharCode(64 + num)}</span>
                 <span>{text}</span>
               </button>
             </li>
           ))}
         </ol>
+
+        <div className="exam-nav">
+          <div className="exam-nav-dots">
+            {shuffled.map((_, i) => (
+              <button
+                key={i}
+                className={`exam-nav-dot${i === currentIndex ? ' current' : ''}${answers[i] !== null ? ' answered' : ''}`}
+                onClick={() => setCurrentIndex(i)}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
+          <div className="exam-nav-actions">
+            <button
+              className="btn-secondary"
+              onClick={() => setCurrentIndex((i) => Math.max(0, i - 1))}
+              disabled={currentIndex === 0}
+            >
+              Previous
+            </button>
+            <span className="exam-answered-count">{answeredCount} / {totalQuestions} answered</span>
+            {currentIndex < totalQuestions - 1 ? (
+              <button
+                className="btn-primary"
+                onClick={() => setCurrentIndex((i) => i + 1)}
+              >
+                Next
+              </button>
+            ) : (
+              <button className="btn-primary" onClick={submitExam}>
+                Submit
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -5,18 +5,19 @@ interface CategoryItemProps {
   category: Category
   isSelected: boolean
   onClick: () => void
-  onEdit: (e: React.MouseEvent) => void
-  onDelete: (e: React.MouseEvent) => void
+  onEdit?: (e: React.MouseEvent) => void
+  onDelete?: (e: React.MouseEvent) => void
+  readOnly?: boolean
 }
 
-export default function CategoryItem({ category, isSelected, onClick, onEdit, onDelete }: CategoryItemProps) {
+export default function CategoryItem({ category, isSelected, onClick, onEdit, onDelete, readOnly }: CategoryItemProps) {
   return (
     <li
       className={isSelected ? 'category-item active' : 'category-item'}
       onClick={onClick}
     >
       <span>{category.name}</span>
-      {isSelected && (
+      {isSelected && !readOnly && onEdit && onDelete && (
         <ItemActions
           onEdit={(e) => { e.stopPropagation(); onEdit(e) }}
           onDelete={(e) => { e.stopPropagation(); onDelete(e) }}

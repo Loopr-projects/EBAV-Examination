@@ -5,11 +5,12 @@ interface CategoryListProps {
   categories: Category[]
   selectedCategory: Category | null
   onSelect: (category: Category) => void
-  onEdit: (e: React.MouseEvent) => void
-  onDelete: (e: React.MouseEvent) => void
+  onEdit?: (e: React.MouseEvent) => void
+  onDelete?: (e: React.MouseEvent) => void
+  readOnly?: boolean
 }
 
-export default function CategoryList({ categories, selectedCategory, onSelect, onEdit, onDelete }: CategoryListProps) {
+export default function CategoryList({ categories, selectedCategory, onSelect, onEdit, onDelete, readOnly }: CategoryListProps) {
   return (
     <ul className="category-list">
       {categories.map((cat) => (
@@ -20,6 +21,7 @@ export default function CategoryList({ categories, selectedCategory, onSelect, o
           onClick={() => onSelect(cat)}
           onEdit={onEdit}
           onDelete={onDelete}
+          readOnly={readOnly}
         />
       ))}
     </ul>

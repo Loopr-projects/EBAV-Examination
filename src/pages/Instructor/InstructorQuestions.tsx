@@ -14,7 +14,7 @@ import ConfirmationModal from '../../components/ConfirmationModal'
 import CreateQuestionModal from '../../components/CreateQuestionModal'
 import EditQuestionModal from '../../components/EditQuestionModal'
 
-export default function InstructorDashboard() {
+export default function InstructorQuestions() {
   const { user, signOut } = useAuth()
 
   const [categories, setCategories] = useState<Category[]>([])

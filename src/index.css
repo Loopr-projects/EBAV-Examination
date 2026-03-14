@@ -368,6 +368,88 @@ body {
   margin-bottom: 1.5rem;
 }
 
+/* ── Landing / Dashboard page ── */
+.landing-welcome {
+  margin-bottom: 2rem;
+}
+
+.landing-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.landing-title span {
+  color: var(--color-primary);
+}
+
+.landing-subtitle {
+  color: var(--color-text-muted, #888);
+  font-size: 1rem;
+}
+
+.landing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .landing-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.landing-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  width: 100%;
+}
+
+.landing-card:hover {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 6%, var(--color-surface));
+  transform: translateY(-2px);
+}
+
+.landing-card-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+  color: var(--color-primary);
+}
+
+.landing-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.landing-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.landing-card-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted, #888);
+  line-height: 1.5;
+}
+
 .welcome-card h2 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
@@ -382,6 +464,12 @@ body {
   grid-template-columns: 1fr 2fr;
   gap: 1.25rem;
   align-items: start;
+}
+
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .info-card {
@@ -722,7 +810,7 @@ body {
   inset: 0;
   background: var(--color-bg);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 1000;
   overflow-y: auto;
@@ -740,6 +828,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  margin: auto;
 }
 
 .exam-topbar {
@@ -849,6 +938,16 @@ body {
   border-color: var(--color-primary);
 }
 
+.exam-answer-btn.selected {
+  background: color-mix(in srgb, var(--color-primary) 18%, transparent);
+  border-color: var(--color-primary);
+}
+
+.exam-answer-btn.selected .exam-answer-letter {
+  background: var(--color-primary);
+  color: #fff;
+}
+
 .exam-answer-letter {
   display: flex;
   align-items: center;
@@ -862,6 +961,60 @@ body {
   flex-shrink: 0;
 }
 
+/* ── Navigation grid ── */
+.exam-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-top: 1px solid var(--color-border);
+  padding-top: 1rem;
+}
+
+.exam-nav-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.exam-nav-dot {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.35rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text-muted, #888);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.exam-nav-dot.answered {
+  background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.exam-nav-dot.current {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.exam-nav-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.exam-answered-count {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #888);
+  flex: 1;
+  text-align: center;
+}
+
 /* ── Results screen ── */
 .exam-results {
   width: 100%;
@@ -869,6 +1022,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  margin: auto;
 }
 
 .exam-results-header {

@@ -4,14 +4,15 @@ import ItemActions from './ItemActions'
 
 interface QuestionItemProps {
   question: Question
-  onEdit: (e: React.MouseEvent) => void
-  onDelete: (e: React.MouseEvent) => void
+  onEdit?: (e: React.MouseEvent) => void
+  onDelete?: (e: React.MouseEvent) => void
   onCopy?: (e: React.MouseEvent) => void
+  readOnly?: boolean
 }
 
 const ANSWER_KEYS = ['answer1', 'answer2', 'answer3', 'answer4', 'answer5', 'answer6'] as const
 
-export default function QuestionItem({ question, onEdit, onDelete, onCopy }: QuestionItemProps) {
+export default function QuestionItem({ question, onEdit, onDelete, onCopy, readOnly }: QuestionItemProps) {
   const [expanded, setExpanded] = useState(false)
   const [imgError, setImgError] = useState(false)
 
@@ -22,11 +23,13 @@ export default function QuestionItem({ question, onEdit, onDelete, onCopy }: Que
       <div className="question-item-header" onClick={() => setExpanded((v) => !v)}>
         <span>{question.question}</span>
         <div className="question-item-header-right">
-          <ItemActions
-            onEdit={(e) => { e.stopPropagation(); onEdit(e) }}
-            onDelete={(e) => { e.stopPropagation(); onDelete(e) }}
-            onCopy={onCopy ? (e) => { e.stopPropagation(); onCopy(e) } : undefined}
-          />
+          {!readOnly && onEdit && onDelete && (
+            <ItemActions
+              onEdit={(e) => { e.stopPropagation(); onEdit(e) }}
+              onDelete={(e) => { e.stopPropagation(); onDelete(e) }}
+              onCopy={onCopy ? (e) => { e.stopPropagation(); onCopy(e) } : undefined}
+            />
+          )}
           <span className="question-item-chevron">{expanded ? '▲' : '▼'}</span>
         </div>
       </div>
